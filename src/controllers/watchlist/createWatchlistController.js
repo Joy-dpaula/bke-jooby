@@ -1,11 +1,10 @@
-import { createTable, tableValidateToCreate } from "../../models/tableModel.js";
+import { createTable, tableValidateToCreate } from "../../models/watchlistModel.js";
 import { getByPublicId } from "../../models/authModel.js";
 
 const create = async (req, res, next) => {
     try {
         console.log("req.userLogged:", req.userLogged);
 
-       
         if (!req.userLogged || !req.userLogged.public_id) {
             return res.status(400).json({ error: "Usuário não autenticado!" });
         }

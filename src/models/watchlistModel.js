@@ -3,8 +3,7 @@ import {z} from 'zod'
 
 const prisma = new PrismaClient()
 
-
-const tableSchema = z.object({
+const watchlistSchema = z.object({
     id: z.number({
         invalid_type_error: "O id deve ser um valor numérico",
         required_error: "O id é obrigatório",
@@ -29,33 +28,29 @@ const tableSchema = z.object({
           
 })
 
-
-export const tableValidateToUpdate = (table) => {
-    const partialTableSchema= tableSchema.partial({user_id: true})
-    return partialTableSchema.safeParse(table)
+export const watchlistValidateToUpdate = (watchlist) => {
+    const partialWatchlistSchema= watchlistSchema.partial({user_id: true})
+    return partialWatchlistSchema.safeParse(watchlist)
 }
 
-
-
-export const tableValidateId = (id) => {
-    const partialTableSchema = tableSchema.partial({
+export const watchlistValidateId = (id) => {
+    const partialWatchlistSchema = watchlistSchema.partial({
         movies: true,
         description: true,
         name: true,
         user_id: true,
     
     })
-    return partialTableSchema.safeParse({id})
+    return partialWatchlistSchema.safeParse({id})
 }
 
-
-export const tableValidateToCreate = (table) => {
-    const partialTableSchema = tableSchema.partial({id: true, user_id: true})
-    return partialTableSchema.safeParse(table)
+export const watchlistValidateToCreate = (watchlist) => {
+    const partialWatchlistSchema = watchlistSchema.partial({id: true, user_id: true})
+    return partialWatchlistSchema.safeParse(watchlist)
 }
 
-export const listTable = async (public_id) => {
-    const table = await prisma.table.findMany({
+export const listWatchlist = async (public_id) => {
+    const watchlist = await prisma.watchlist.findMany({
         where: {
             user: {
                 public_id
@@ -65,11 +60,22 @@ export const listTable = async (public_id) => {
             movies: true, 
         },
     })
-    return table
+    return watchlist
 }
 
-export const deleteTable = async (id, public_id) => {
-    const table = await prisma.table.delete({
+export const listPublicWatchlist = async () => {
+    const result = await prisma.watchlist.findMany({
+        include: {
+            movies: true, 
+        },
+    })
+
+    return result
+
+}
+
+export const deleteWatchlist = async (id, public_id) => {
+    const watchlist = await prisma.watchlist.delete({
         where: {
             id: id,
             user:{
@@ -77,14 +83,14 @@ export const deleteTable = async (id, public_id) => {
             }
         }
     })
-    return table
+    return watchlist
 }
 
 
-export const createTable = async (tableData) => {
-    const { name, description, user_id, movies } = tableData;
+export const createWatchlist = async (tableData) => {
+    const { name, description, user_id, movies } = watchlistData;
 
-    const result = await prisma.table.create({
+    const result = await prisma.watchlist.create({
         data: {
             name,
             description,
@@ -101,19 +107,17 @@ export const createTable = async (tableData) => {
     return result;
 };
 
-
-
-export const update = async (table, public_id) => {
-    const result = await prisma.table.update({
+export const updateWatchlist = async (watchlist, public_id) => {
+    const result = await prisma.watchlist.update({
         where: {
-            id: table.id,
+            id: watchlist.id,
             user: { public_id },
         },
         data: {
-            name: table.name,
-            description: table.description,
-            movies: table.movieIds
-                ? { set: table.movieIds.map(id => ({ id })) }
+            name: watchlist.name,
+            description: watchlist.description,
+            movies: watchlist.movieIds
+                ? { set: watchlist.movieIds.map(id => ({ id })) }
                 : undefined, 
         },
         include: {
@@ -121,22 +125,7 @@ export const update = async (table, public_id) => {
         },
     });
 
-  
-
     return result;
 };
-
-
-export const list = async () => {
-    const result = await prisma.table.findMany({
-        include: {
-            movies: true, 
-        },
-    })
-
-    return result
-
-}
-
 
 

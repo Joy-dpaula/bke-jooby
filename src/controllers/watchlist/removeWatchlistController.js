@@ -1,21 +1,21 @@
-import { deleteWatchlist,  watchlistValidateId } from "../../models/favoriteModel.js"
+import { deleteTable,  tableValidateId } from "../../models/watchlistModel.js"
 
 const remove = async (req, res, next) => {
     const {id} = req.params
     try{
-        const  watchlistSValidate =  watchlistValidateId(+id)
+        const tableValidate =  tableValidateId(+id)
 
-        if(watchlistSValidate?.error)
+        if(tableValidate?.error)
             return res.status(401).json({
                 error: "Erro ao deletar um serviço!",
-                fieldErrors: watchlistSValidate.error.flatten().fieldErrors
+                fieldErrors: tableValidate.error.flatten().fieldErrors
             })
 
-        const watchlist = await deleteWatchlist(watchlistSValidate.data.id, req.userLogged.public_id)
+        const table = await deleteTable(tableValidate.data.id, req.userLogged.public_id)
 
         return res.json({
             success: "Conta removida com sucesso!",
-            watchlist
+            table
         }) 
     }catch(error){
         if(error?.code === 'P2025')

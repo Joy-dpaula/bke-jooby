@@ -1,11 +1,11 @@
-import { listWatchlist } from "../../models/favoriteModel.js" 
+import { listFavorites } from "../../models/favoriteModel.js" 
 
-const list = async (req, res, next) => {
+const listFavorite = async (req, res, next) => {
     try{
         const favorite = await listWatchlist(req.userLogged.public_id)
        
         return res.json({
-            message: "Avaliações listadas com sucesso!",
+            message: "Favoritos listados com sucesso",
             favorite
         })
     } catch(error) {
@@ -13,4 +13,4 @@ const list = async (req, res, next) => {
     }
 }
 
-export default list
+export default listFavorite

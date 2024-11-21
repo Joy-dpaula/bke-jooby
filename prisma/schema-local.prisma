@@ -22,7 +22,7 @@ model user {
   avatar    String?     @db.VarChar(700)
   session   session[]
   reviews   reviews[]
-  watchlist watchlist[]
+  watchlist favorites[]
   table     table[]
 }
 
@@ -34,7 +34,7 @@ model movie {
   sinopse      String?     @db.Text
   release_date DateTime?
   reviews      reviews[]
-  watchlist    watchlist[]
+  watchlist    favorites[]
    tables       table[]     @relation("TableMovies")
 }
 
@@ -49,7 +49,7 @@ model reviews {
   movieId   Int
 }
 
-model watchlist {
+model favorites {
   id       Int      @id @default(autoincrement())
   user_id  String
   movie_id Int

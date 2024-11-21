@@ -1,16 +1,14 @@
 import express from 'express'
-import create from '../controllers/favorite/favoriteController.js'
-import getList from '../controllers/favorite/favoriteListController.js'
-import del from '../controllers/favorite/favoriteRemoveController.js'
+import createFavorite from '../controllers/favorite/favoriteController.js'
+import listFavorite from '../controllers/favorite/favoriteListController.js'
+import removeFavorite from '../controllers/favorite/favoriteDeleteController.js'
+
 import { auth } from '../middlewares/auth.js'
 const router = express.Router();
 
-
 router.use(auth)
-router.post('/' , create)
-router.get('/', getList)
-router.delete('/:id', del)
-
-
+router.post('/' , createFavorite)
+router.get('/', listFavorite)
+router.delete('/:id', removeFavorite)
 
 export default router

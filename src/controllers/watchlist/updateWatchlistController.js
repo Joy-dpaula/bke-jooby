@@ -1,4 +1,4 @@
-import { update, tableValidateToUpdate } from "../../models/tableModel.js";
+import { update, tableValidateToUpdate } from "../../models/watchlistModel.js";
 import { getByPublicId } from "../../models/authModel.js";
 
 const updateController = async (req, res, next) => {

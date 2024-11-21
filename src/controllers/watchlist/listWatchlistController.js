@@ -1,4 +1,4 @@
-import { listTable } from "../../models/tableModel.js" 
+import { listTable } from "../../models/watchlistModel.js" 
 
 const get = async (req, res, next) => {
     try{
