@@ -1,7 +1,7 @@
-import { createTable, tableValidateToCreate } from "../../models/watchlistModel.js";
+import { createWatchlist, watchlistValidateToCreate } from "../../models/watchlistModel.js";
 import { getByPublicId } from "../../models/authModel.js";
 
-const create = async (req, res, next) => {
+const createWatchlistController = async (req, res, next) => {
     try {
         console.log("req.userLogged:", req.userLogged);
 
@@ -12,13 +12,13 @@ const create = async (req, res, next) => {
         const body = req.body;
 
        
-        const tableValidated = tableValidateToCreate(body);
+        const watchlistValidated = watchlistValidateToCreate(body);
 
-        if (!tableValidated.success) {
-            console.log("Erros de validação:", tableValidated.error.errors);
+        if (!watchlistValidated.success) {
+            console.log("Erros de validação:", watchlistValidated.error.errors);
             return res.status(400).json({
-                error: "Dados da tabela inválidos!",
-                details: tableValidated.error.errors,
+                error: "Dados da watchlist inválidos!",
+                details: watchlistValidated.error.errors,
             });
         }
 
@@ -31,29 +31,29 @@ const create = async (req, res, next) => {
         }
 
        
-        const tableData = {
-            ...tableValidated.data,
+        const watchlistData = {
+            ...watchlistValidated.data,
             user_id: user.public_id, 
             movies: body.movies || [], 
         };
 
        
-        const result = await createTable(tableData);
+        const result = await createTable(watchlistData);
 
         if (!result) {
             return res.status(500).json({
-                error: "Erro ao criar tabela!",
+                error: "Erro ao criar watchlist",
             });
         }
 
         return res.json({
-            success: "Tabela criada com sucesso!",
+            success: "Watchlist criada com sucesso!",
             body: result,
         });
     } catch (error) {
-        console.error("Erro ao criar tabela:", error);
+        console.error("Erro ao criar watchlist:", error);
         next(error);
     }
 };
 
-export default create;
+export default  createWatchlistController

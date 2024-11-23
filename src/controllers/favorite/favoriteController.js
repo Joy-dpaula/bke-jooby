@@ -33,7 +33,7 @@ const createFavorite = async (req, res, next) => {
             user_id: user.public_id
         };
 
-        const result = await watchlist(favoriteData);
+        const result = await creatFavorite(favoriteData);
 
         if (!result)
             return res.status(401).json({

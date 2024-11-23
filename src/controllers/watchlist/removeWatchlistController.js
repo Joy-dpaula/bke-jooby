@@ -1,29 +1,32 @@
-import { deleteTable,  tableValidateId } from "../../models/watchlistModel.js"
+import { deleteWatchlist,  watchlistValidateId } from "../../models/watchlistModel.js"
 
-const remove = async (req, res, next) => {
+const removeWatchlist = async (req, res, next) => {
+
     const {id} = req.params
-    try{
-        const tableValidate =  tableValidateId(+id)
 
-        if(tableValidate?.error)
+    try{
+        const watchlistValidate =  watchlistValidateId(+id)
+
+        if(watchlistValidate?.error)
             return res.status(401).json({
-                error: "Erro ao deletar um serviço!",
-                fieldErrors: tableValidate.error.flatten().fieldErrors
+                error: "Erro ao deletar a watchlist",
+                fieldErrors: watchlistValidate.error.flatten().fieldErrors
             })
 
-        const table = await deleteTable(tableValidate.data.id, req.userLogged.public_id)
+        const watchlist = await deleteWatchlist(watchlistValidate.data.id, req.userLogged.public_id)
 
         return res.json({
-            success: "Conta removida com sucesso!",
-            table
+            success: "Watchlist removida com sucesso!",
+            watchlist
         }) 
-    }catch(error){
+
+    } catch(error){
         if(error?.code === 'P2025')
             return res.status(404).json({
-                error: `Conta com o id ${id}, não encontrado!`
+                error: `Watchlist com o id ${id} não encontrado!`
             })
         next(error)
     }
 }
 
-export default remove
+export default removeWatchlist

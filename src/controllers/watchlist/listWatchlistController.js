@@ -1,16 +1,16 @@
-import { listTable } from "../../models/watchlistModel.js" 
+import { listWatchlist } from "../../models/watchlistModel.js" 
 
-const get = async (req, res, next) => {
+const listWatchList = async (req, res, next) => {
     try{
-        const table = await listTable(req.userLogged.public_id)
+        const watchlist = await listTable(req.userLogged.public_id)
        
         return res.json({
-            message: "Tabelas listadas com sucesso!",
-            table
+            message: "Watchlists listadas com sucesso!",
+            watchlist
         })
     } catch(error) {
         next(error)
     }
 }
 
-export default get
+export default listWatchList

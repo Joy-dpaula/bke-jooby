@@ -15,7 +15,7 @@ const removeFavorite = async (req, res, next) => {
 
         return res.json({
             success: "Favorito excluído com sucesso",
-            watchlist
+            favorite
         }) 
     } catch(error){
         if(error?.code === 'P2025')

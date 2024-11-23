@@ -1,16 +1,17 @@
-import { update, tableValidateToUpdate } from "../../models/watchlistModel.js";
+import { updateWatchlist, watchlistValidateToUpdate } from "../../models/watchlistModel.js";
 import { getByPublicId } from "../../models/authModel.js";
 
 const updateController = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const table = { ...req.body, id: +id };
+        const watchlist = { ...req.body, id: +id };
 
-        const tableValidated = tableValidateToUpdate(table);
-        if (tableValidated?.error) {
+        const watchlistValidated = watchlistValidateToUpdate(watchlist);
+
+        if (watchlistValidated?.error) {
             return res.status(400).json({
-                error: "Erro ao validar tabela!",
-                details: tableValidated.error.flatten().fieldErrors,
+                error: "Erro ao validar watchlist",
+                details: watchlistValidated.error.flatten().fieldErrors,
             });
         }
 
@@ -19,21 +20,22 @@ const updateController = async (req, res, next) => {
             return res.status(401).json({ error: "Usuário não autenticado!" });
         }
 
-        const result = await update(
-            { ...tableValidated.data, user_id: user.id },
+        const result = await updateWatchlist(
+            { ...watchlistValidated.data, user_id: user.id },
             req.userLogged.public_id
         );
 
         if (!result) {
             return res.status(404).json({
-                error: `Tabela com o id ${id} não encontrada ou não pertence ao usuário!`,
+                error: `Watchlist com o id ${id} não encontrada ou não pertence ao usuário!`,
             });
         }
 
         return res.json({
-            success: "Tabela atualizada com sucesso!",
-            table: result,
+            success: "Watchlist atualizada com sucesso!",
+            watchlist: result,
         });
+
     } catch (error) {
         next(error);
     }
