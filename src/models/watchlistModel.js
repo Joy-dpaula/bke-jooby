@@ -87,7 +87,7 @@ export const deleteWatchlist = async (id, public_id) => {
 }
 
 
-export const createWatchlist = async (tableData) => {
+export const createWatchlist = async (watchlistData) => {
     const { name, description, user_id, movies } = watchlistData;
 
     const result = await prisma.watchlist.create({

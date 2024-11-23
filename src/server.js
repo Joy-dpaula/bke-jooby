@@ -21,7 +21,7 @@ app.use('/auth', authRouter)
 app.use('/reviews' , reviewsRouter)
 app.use('/movies', movieRouter)
 app.use('/favorites', favoritesRouter)
-app.use('/watchlists' , watchlistsRouter)
+app.use('/watchlist' , watchlistsRouter)
 
 app.use(handler)
 

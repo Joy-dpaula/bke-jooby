@@ -36,9 +36,8 @@ const createWatchlistController = async (req, res, next) => {
             user_id: user.public_id, 
             movies: body.movies || [], 
         };
-
        
-        const result = await createTable(watchlistData);
+        const result = await createWatchlist(watchlistData);
 
         if (!result) {
             return res.status(500).json({
@@ -48,7 +47,7 @@ const createWatchlistController = async (req, res, next) => {
 
         return res.json({
             success: "Watchlist criada com sucesso!",
-            body: result,
+            body: result
         });
     } catch (error) {
         console.error("Erro ao criar watchlist:", error);
@@ -56,4 +55,4 @@ const createWatchlistController = async (req, res, next) => {
     }
 };
 
-export default  createWatchlistController
+export default createWatchlistController
