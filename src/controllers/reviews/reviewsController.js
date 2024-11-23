@@ -2,7 +2,8 @@ import { review, reviewValidateToCreate } from "../../models/reviewsModel.js"
 import { getByPublicId } from "../../models/authModel.js"
 
 
-const avalia = async (req, res, next) => {
+const createReview = async (req, res, next) => {
+
     try {
 
         console.log("req.userLogged:", req.userLogged);
@@ -14,11 +15,10 @@ const avalia = async (req, res, next) => {
 
         const reviewValidated = reviewValidateToCreate(body)
 
-
         if (!reviewValidated.success) {
             console.log("Erros de validação:", reviewValidated.error.errors);
             return res.status(400).json({
-                error: "Dados da avaliação inválidos!",
+                error: "Dados da review inválidos!",
                 details: reviewValidated.error.errors
             });
         }
@@ -42,11 +42,11 @@ const avalia = async (req, res, next) => {
 
         if (!result)
             return res.status(401).json({
-                error: "Erro ao criar conta!"
+                error: "Erro ao criar review"
             })
 
         return res.json({
-            success: "Conta criada com sucesso!",
+            success: "Review criada com sucesso",
             body: result
         })
     } catch (error) {
@@ -54,4 +54,4 @@ const avalia = async (req, res, next) => {
     }
 }
 
-export default avalia
+export default createReview

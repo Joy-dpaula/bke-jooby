@@ -2,7 +2,7 @@ import { listWatchlist } from "../../models/watchlistModel.js"
 
 const listWatchList = async (req, res, next) => {
     try{
-        const watchlist = await listTable(req.userLogged.public_id)
+        const watchlist = await listWatchlist(req.userLogged.public_id)
        
         return res.json({
             message: "Watchlists listadas com sucesso!",

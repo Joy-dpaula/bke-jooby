@@ -1,47 +1,49 @@
 import { update, reviewsValidateToUpdate } from "../../models/reviewsModel.js"
 import { getByPublicId } from '../../models/authModel.js'
 
-const updateController = async (req, res, next) => {
-    const {id} = req.params
-    try{
+const updateReview = async (req, res, next) => {
+
+    const { id } = req.params
+
+    try {
         const review = req.body
         review.id = +id
 
         const reviewValidated = reviewsValidateToUpdate(review)
 
-        if(reviewValidated?.error)
+        if (reviewValidated?.error)
             return res.status(401).json({
-                error: "Erro ao atualizar a conta!",
+                error: "Erro ao atualizar review",
                 fieldErrors: reviewValidated.error.flatten().fieldErrors
             })
 
         const user = await getByPublicId(req.userLogged.public_id)
 
-        if(!user)
+        if (!user)
             return res.status(401).json({
                 error: "Public ID Inválido!"
             })
 
-            reviewValidated.data.user_id = user.public_id; 
+        reviewValidated.data.user_id = user.public_id;
 
         const result = await update(reviewValidated.data, req.userLogged.public_id)
 
-        if(!result)
+        if (!result)
             return res.status(401).json({
-                error: "Erro ao criar atualizar!"
+                error: "Erro ao atualizar review"
             })
 
         return res.json({
-            success: "Conta atualizada com sucesso!",
+            success: "Review atualizada com sucesso",
             review: result
         })
-    } catch(error) {
-        if(error?.code === 'P2025')
+    } catch (error) {
+        if (error?.code === 'P2025')
             return res.status(404).json({
-                error: `Conta com o id ${id}, não encontrado!`
+                error: `Review com o id ${id} não encontrado!`
             })
         next(error)
     }
 }
 
-export default updateController
+export default updateReview
