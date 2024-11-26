@@ -86,7 +86,6 @@ export const deleteWatchlist = async (id, public_id) => {
     return watchlist
 }
 
-
 export const createWatchlist = async (watchlistData) => {
     const { name, description, user_id, movies } = watchlistData;
 

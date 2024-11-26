@@ -3,8 +3,6 @@ import { z } from 'zod'
 
 const prisma = new PrismaClient()
 
-
-
 const reviewSchema = z.object({
     id: z.number({
         invalid_type_error: "O id deve ser um valor numérico",
@@ -41,13 +39,10 @@ const reviewSchema = z.object({
 
 })
 
-
 export const reviewsValidateToUpdate = (review) => {
     const partialReviewSchema = reviewSchema.partial({ user_id: true })
     return partialReviewSchema.safeParse(review)
 }
-
-
 
 export const reviewValidateId = (id) => {
     const partialReviewSchema = reviewSchema.partial({
@@ -59,7 +54,6 @@ export const reviewValidateId = (id) => {
     })
     return partialReviewSchema.safeParse({ id })
 }
-
 
 export const reviewValidateToCreate = (reviews) => {
     const partialReviewSchema = reviewSchema.partial({ id: true, user_id: true })
@@ -93,14 +87,12 @@ export const deleteReview = async (id, public_id) => {
     return review
 }
 
-
 export const review = async (reviews) => {
     const result = await prisma.reviews.create({
         data: reviews
     })
     return result
 }
-
 
 export const update = async (review, public_id) => {
     const result = await prisma.reviews.update({

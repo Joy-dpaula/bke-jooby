@@ -11,7 +11,6 @@ export const createSession = async (user_id, token) => {
     return result
 }
 
-
 export const deleteByToken = async (token) => {
 
     const user = await prisma.session.delete({ where: { token } });
